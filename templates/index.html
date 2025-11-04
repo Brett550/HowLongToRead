@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="../static/styles.css"/>
+    <title>Brett's HowLongToRead</title>
+    
+</head>
+<body>
+    
+    <h1>Brett's HowLongToRead</h1>
+
+    <form id="calculation-form" method ="POST" class="search-box">
+        Your wpm: <input type = "number" name="wpm" min ="1" required/><br>
+        Book Title: <input type = "text" name="title" required/><br>
+        <button type="submit">Calculate</button>
+    </form>
+
+<!-- Jinja 2 dyamic HTML -->
+ {% if page_count is not none %}
+    <div class="result">
+        <p>The book "{{ book_title  }}" has {{ page_count }} pages.</p>
+        {% if reading_time_hours is not none and reading_time_minutes is not none %}
+            <p>At {{ request.form['wpm'] }} words per minute, it will take approximately 
+            {% if reading_time_hours > 0 %}
+                {{ reading_time_hours }} hour{% if reading_time_hours > 1 %}s{% endif %}
+            {% endif %}
+            {% if reading_time_minutes > 0 %}
+                {{ reading_time_minutes }} minute{% if reading_time_minutes > 1 %}s{% endif %}
+            {% endif %}
+            to read the book.</p>
+        {% endif %}
+    </div>
+{% elif request.method == "POST" %}
+    <div class="result">
+        <p>Sorry, no page count information found for that book.</p>
+    </div>
+{% endif %}
+
+</body>
+</html>
